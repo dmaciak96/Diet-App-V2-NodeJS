@@ -5,20 +5,24 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>3.2.3</version>
+        <relativePath/>
     </parent>
     <groupId>pl.daveproject</groupId>
-    <artifactId>webdiet</artifactId>
+    <artifactId>diet-app</artifactId>
     <version>1.0.0</version>
-    <name>webdiet</name>
-    <description>webdiet</description>
+    <name>diet-app</name>
+    <description>diet-app</description>
     <properties>
-        <java.version>17</java.version>
-        <vaadin.version>24.1.0</vaadin.version>
+        <java.version>21</java.version>
+        <vaadin.version>24.3.7</vaadin.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
-        <start-class>pl.daveproject.webdiet.Webdiet</start-class>
+        <jasypt.version>3.0.3</jasypt.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <start-class>pl.daveproject.dietapp.DietApplication</start-class>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -54,7 +58,6 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -66,6 +69,12 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>${jasypt.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -91,9 +100,14 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-maven-plugin</artifactId>
+                <version>${jasypt.version}</version>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -111,7 +125,7 @@
                         <dependency>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok-mapstruct-binding</artifactId>
-                            <version>0.2.0</version>
+                            <version>${lombok-mapstruct-binding.version}</version>
                         </dependency>
                     </annotationProcessorPaths>
                     <compilerArgs>
