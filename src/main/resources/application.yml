@@ -1,0 +1,20 @@
+server:
+  port : 8080
+
+spring:
+  application:
+    name: Webdiet
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/webdiet
+    username:
+    password:
+    driverClassName: org.postgresql.Driver
+
+logging:
+  file:
+    path: ./logs
