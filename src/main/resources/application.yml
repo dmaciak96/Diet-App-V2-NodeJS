@@ -11,9 +11,8 @@ spring:
     open-in-view: false
   datasource:
     url: jdbc:postgresql://localhost:5432/diet-app
-    username: ENC(GTlhg4xDD/TmdE7hqXL2yWhtJ6Ap6agV1wdynnGo+QE5k5lMUE1zs0tD/PztoOFg)
-    password: ENC(VRUG5O+2JwNQlSXvXqGVsb5Ro/1D6ab4EmOSYzrawoq2K8rvWxeWLe2Q2pLfUIUX)
-    driverClassName: org.postgresql.Driver
+    username: ENC(OTidiAMB031F9m0ewHuPfq5wbWOUVLeLlgI3iAEXx6we8ZBYJiNjj6rPCIkaU9Az)
+    password: ENC(N90HXsbb63uF2FebcINdegy6tueoHqLFeiPhUNS11vG867rNoPUPR1KKKLtlPAJK)
 
 logging:
   file:
