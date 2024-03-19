@@ -12,6 +12,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.StreamResource;
 import lombok.extern.slf4j.Slf4j;
 import pl.daveproject.dietapp.bmi.ui.BmiView;
 import pl.daveproject.dietapp.caloricneeds.ui.TotalCaloricNeedsView;
@@ -25,6 +26,8 @@ import pl.daveproject.dietapp.shoppinglist.ui.ShoppingListView;
 import pl.daveproject.dietapp.ui.component.WebdietNotification;
 import pl.daveproject.dietapp.ui.component.type.WebdietNotificationType;
 import pl.daveproject.dietapp.ui.dashboard.DashboardView;
+
+import java.io.ByteArrayInputStream;
 
 @Slf4j
 public class AfterLoginAppLayout extends AbstractAppLayout {
@@ -48,6 +51,11 @@ public class AfterLoginAppLayout extends AbstractAppLayout {
             var currentUser = userService.findByEmail(currentUserEmail)
                     .orElseThrow(() -> new UserNotFoundException(currentUserEmail));
             avatar = new Avatar(currentUser.getFullName());
+            if (currentUser.getAvatar() != null) {
+                var imageResource = new StreamResource("company-logo.png",
+                        () -> new ByteArrayInputStream(currentUser.getAvatar()));
+                avatar.setImageResource(imageResource);
+            }
         } catch (UserNotLoginException e) {
             WebdietNotification.show(getTranslation("error-message.user-not-login"), WebdietNotificationType.ERROR);
             log.error("Login user not found for current session: ", e);
