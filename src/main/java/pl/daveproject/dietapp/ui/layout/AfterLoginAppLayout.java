@@ -53,9 +53,9 @@ public class AfterLoginAppLayout extends AbstractAppLayout {
         }
 
         var layout = new HorizontalLayout(createAvatarMenuBar(avatar));
+        layout.getStyle().set("margin-right", "1%");
         layout.setWidthFull();
         layout.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
-        layout.addClassNames(LumoUtility.Margin.Right.MEDIUM);
         return layout;
     }
 
