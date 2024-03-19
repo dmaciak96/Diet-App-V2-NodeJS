@@ -12,7 +12,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
-import com.vaadin.flow.theme.lumo.LumoUtility;
 import lombok.extern.slf4j.Slf4j;
 import pl.daveproject.dietapp.bmi.ui.BmiView;
 import pl.daveproject.dietapp.caloricneeds.ui.TotalCaloricNeedsView;
@@ -20,6 +19,7 @@ import pl.daveproject.dietapp.exception.UserNotFoundException;
 import pl.daveproject.dietapp.exception.UserNotLoginException;
 import pl.daveproject.dietapp.product.ui.ProductView;
 import pl.daveproject.dietapp.recipe.ui.RecipeView;
+import pl.daveproject.dietapp.security.service.SecurityService;
 import pl.daveproject.dietapp.security.service.UserService;
 import pl.daveproject.dietapp.shoppinglist.ui.ShoppingListView;
 import pl.daveproject.dietapp.ui.component.WebdietNotification;
@@ -30,10 +30,13 @@ import pl.daveproject.dietapp.ui.dashboard.DashboardView;
 public class AfterLoginAppLayout extends AbstractAppLayout {
 
     private final UserService userService;
+    private final SecurityService securityService;
 
-    public AfterLoginAppLayout(UserService userService) {
+    public AfterLoginAppLayout(UserService userService,
+                               SecurityService securityService) {
         super(true, true);
         this.userService = userService;
+        this.securityService = securityService;
         addToNavbar(createAvatar());
         addToDrawer(getMenuTabs());
     }
@@ -43,7 +46,8 @@ public class AfterLoginAppLayout extends AbstractAppLayout {
         try {
             var currentUserEmail = userService.getCurrentUser().getEmail();
             var currentUser = userService.findByEmail(currentUserEmail)
-                    .orElseThrow(() -> new UserNotFoundException(currentUserEmail));            avatar = new Avatar(currentUser.getFullName());
+                    .orElseThrow(() -> new UserNotFoundException(currentUserEmail));
+            avatar = new Avatar(currentUser.getFullName());
         } catch (UserNotLoginException e) {
             WebdietNotification.show(getTranslation("error-message.user-not-login"), WebdietNotificationType.ERROR);
             log.error("Login user not found for current session: ", e);
@@ -68,7 +72,7 @@ public class AfterLoginAppLayout extends AbstractAppLayout {
         subMenu.addItem(getTranslation("total-caloric-needs.title"), e ->
                 UI.getCurrent().navigate(TotalCaloricNeedsView.class));
         subMenu.addItem(getTranslation("avatar.logout"), e ->
-                UI.getCurrent().getPage().setLocation("/logout"));
+                securityService.logout());
         return menuBar;
     }
 
