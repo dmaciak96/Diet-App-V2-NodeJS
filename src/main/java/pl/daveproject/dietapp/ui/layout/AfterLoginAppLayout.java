@@ -52,7 +52,7 @@ public class AfterLoginAppLayout extends AbstractAppLayout {
                     .orElseThrow(() -> new UserNotFoundException(currentUserEmail));
             avatar = new Avatar(currentUser.getFullName());
             if (currentUser.getAvatar() != null) {
-                var imageResource = new StreamResource("company-logo.png",
+                var imageResource = new StreamResource("avatar.png",
                         () -> new ByteArrayInputStream(currentUser.getAvatar()));
                 avatar.setImageResource(imageResource);
             }
