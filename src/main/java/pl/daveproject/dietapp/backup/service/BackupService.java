@@ -4,6 +4,7 @@ public interface BackupService {
 
     //TODO: IMPLEMENT MAPPER METHODS toEntityFromBackupDto, toBackupDtoFromEntity
     //TODO: Set current user for all objects during entity saving
+    //TODO: We can use DTO Objects
     byte[] convertProductsToByteArray();
 
     byte[] convertRecipesToByteArray();
