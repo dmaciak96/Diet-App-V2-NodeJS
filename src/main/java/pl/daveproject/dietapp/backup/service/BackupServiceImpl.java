@@ -54,4 +54,13 @@ public class BackupServiceImpl implements BackupService {
         return backupMetadata.map(backupMetadataMapper::toDto)
                 .orElseThrow(() -> new BackupException("Backup metadata not found by id %s".formatted(id)));
     }
+
+    @Override
+    public void delete(UUID id) {
+        var currentUser = userService.getCurrentUser();
+        if (backupMetadataRepository.findFirstByApplicationUserIdAndId(currentUser.getId(), id).isPresent()) {
+            log.debug("Deleting backup metadata {}", id);
+            backupMetadataRepository.deleteById(id);
+        }
+    }
 }

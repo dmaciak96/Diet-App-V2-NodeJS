@@ -11,4 +11,6 @@ public interface BackupService {
     BackupMetadataDto update(UUID id, BackupMetadataDto backupMetadataDto);
 
     BackupMetadataDto findById(UUID id);
+
+    void delete(UUID id);
 }
