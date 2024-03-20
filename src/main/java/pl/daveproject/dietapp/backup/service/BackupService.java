@@ -1,17 +1,14 @@
 package pl.daveproject.dietapp.backup.service;
 
+import pl.daveproject.dietapp.backup.model.BackupMetadataDto;
+
+import java.util.UUID;
+
 public interface BackupService {
 
-    //TODO: IMPLEMENT MAPPER METHODS toEntityFromBackupDto, toBackupDtoFromEntity
-    //TODO: Set current user for all objects during entity saving
-    //TODO: We can use DTO Objects
-    byte[] convertProductsToByteArray();
+    BackupMetadataDto save(BackupMetadataDto backupMetadataDto);
 
-    byte[] convertRecipesToByteArray();
+    BackupMetadataDto update(UUID id, BackupMetadataDto backupMetadataDto);
 
-    byte[] convertShoppingListsToByteArray();
-
-    byte[] convertBmiToByteArray();
-
-    byte[] convertCaloricNeedsToByteArray();
+    BackupMetadataDto findById(UUID id);
 }
