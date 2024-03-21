@@ -9,8 +9,10 @@ import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.apache.commons.lang3.StringUtils;
+import pl.daveproject.dietapp.backup.BackupRunner;
 import pl.daveproject.dietapp.backup.model.BackupMetadataDto;
 import pl.daveproject.dietapp.backup.service.BackupService;
+import pl.daveproject.dietapp.security.service.UserService;
 import pl.daveproject.dietapp.ui.component.DeleteConfirmDialog;
 import pl.daveproject.dietapp.ui.component.DownloadButton;
 import pl.daveproject.dietapp.ui.component.grid.CrudGrid;
@@ -26,13 +28,19 @@ public class BackupView extends VerticalLayout implements HasDynamicTitle {
 
     private final CrudGrid<BackupMetadataDto, GridDataFilter> backupMetadataGrid;
     private final BackupService backupService;
+    private final BackupRunner backupRunner;
+    private final UserService userService;
 
     public BackupView(BackupService backupService,
-                      BackupDataProvider backupDataProvider) {
+                      BackupDataProvider backupDataProvider,
+                      BackupRunner backupRunner,
+                      UserService userService) {
         this.backupService = backupService;
         this.backupMetadataGrid = new CrudGrid<>(backupDataProvider, null,
                 CREATE_BACKUP_TRANSLATION_KEY, VaadinIcon.PLAY, DELETE_BACKUP_TRANSLATION_KEY,
                 false);
+        this.backupRunner = backupRunner;
+        this.userService = userService;
 
         createGridColumns();
         setOnNewClickListener();
@@ -65,10 +73,9 @@ public class BackupView extends VerticalLayout implements HasDynamicTitle {
     }
 
     private void createAndOpenBackupDialog() {
-        var backupDialog = new RunBackupDialog(BackupMetadataDto.builder().build());
+        var backupDialog = new RunBackupDialog(backupRunner, backupService, userService);
         add(backupDialog);
         backupDialog.open();
-        backupDialog.runBackup();
         backupDialog.addOpenedChangeListener(e -> {
             if (!e.isOpened()) {
                 backupMetadataGrid.refresh();

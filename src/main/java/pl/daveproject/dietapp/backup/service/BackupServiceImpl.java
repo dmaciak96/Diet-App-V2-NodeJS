@@ -8,6 +8,7 @@ import pl.daveproject.dietapp.backup.repository.BackupMetadataRepository;
 import pl.daveproject.dietapp.exception.BackupException;
 import pl.daveproject.dietapp.security.service.UserService;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +25,9 @@ public class BackupServiceImpl implements BackupService {
     public BackupMetadataDto save(BackupMetadataDto backupMetadataDto) {
         var currentUser = userService.getCurrentUser();
         var backupMetadata = backupMetadataMapper.toEntity(backupMetadataDto);
+        if(backupMetadata.getCreationDate() == null) {
+            backupMetadata.setCreationDate(Instant.now());
+        }
         backupMetadata.setApplicationUser(currentUser);
         var savedEntity = backupMetadataRepository.save(backupMetadata);
         log.debug("Saved new backup metadata {}", savedEntity.getId());
