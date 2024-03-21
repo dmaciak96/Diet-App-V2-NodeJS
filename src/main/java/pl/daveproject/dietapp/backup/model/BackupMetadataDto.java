@@ -20,7 +20,7 @@ public record BackupMetadataDto(UUID id,
                                 byte[] caloricNeeds) {
     public String getCreatedDateAsString() {
         var formatter = DateTimeFormatter
-                .ofPattern("yyyy-MM-dd'T'hh:mm:ssxxx")
+                .ofPattern("yyyy-MM-dd HH:mm:ss")
                 .withZone(ZoneId.systemDefault());
         return creationDate == null ? StringUtils.EMPTY : formatter.format(creationDate);
     }

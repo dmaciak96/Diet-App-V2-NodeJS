@@ -25,7 +25,7 @@ public class BackupServiceImpl implements BackupService {
     public BackupMetadataDto save(BackupMetadataDto backupMetadataDto) {
         var currentUser = userService.getCurrentUser();
         var backupMetadata = backupMetadataMapper.toEntity(backupMetadataDto);
-        if(backupMetadata.getCreationDate() == null) {
+        if (backupMetadata.getCreationDate() == null) {
             backupMetadata.setCreationDate(Instant.now());
         }
         backupMetadata.setApplicationUser(currentUser);
@@ -40,11 +40,12 @@ public class BackupServiceImpl implements BackupService {
         var currentEntity = backupMetadataRepository.findFirstByApplicationUserIdAndId(currentUser.getId(), id);
         var entityToUpdate = currentEntity.map(e -> {
             var sourceEntity = backupMetadataMapper.toEntity(backupMetadataDto);
-            e.setProducts(sourceEntity.getProducts());
-            e.setRecipes(sourceEntity.getRecipes());
-            e.setShoppingLists(sourceEntity.getShoppingLists());
-            e.setBmi(sourceEntity.getBmi());
-            e.setCaloricNeeds(sourceEntity.getCaloricNeeds());
+            e.setProducts(sourceEntity.getProducts() == null ? e.getProducts() : sourceEntity.getProducts());
+            e.setRecipes(sourceEntity.getRecipes() == null ? e.getRecipes() : sourceEntity.getRecipes());
+            e.setShoppingLists(sourceEntity.getShoppingLists() == null ? e.getShoppingLists() : sourceEntity.getShoppingLists());
+            e.setBmi(sourceEntity.getBmi() == null ? e.getBmi() : sourceEntity.getBmi());
+            e.setCaloricNeeds(sourceEntity.getCaloricNeeds() == null ? e.getCaloricNeeds() : sourceEntity.getCaloricNeeds());
+            e.setLastModifiedDate(Instant.now());
             return e;
         }).orElseThrow(() -> new BackupException("Backup metadata not found by id %s".formatted(id)));
         var updatedEntity = backupMetadataRepository.save(entityToUpdate);
