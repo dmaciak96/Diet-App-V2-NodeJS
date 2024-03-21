@@ -14,6 +14,7 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.StreamResource;
 import lombok.extern.slf4j.Slf4j;
+import pl.daveproject.dietapp.backup.ui.BackupView;
 import pl.daveproject.dietapp.bmi.ui.BmiView;
 import pl.daveproject.dietapp.caloricneeds.ui.TotalCaloricNeedsView;
 import pl.daveproject.dietapp.exception.UserNotFoundException;
@@ -89,7 +90,8 @@ public class AfterLoginAppLayout extends AbstractAppLayout {
         tabs.add(createTab(VaadinIcon.DASHBOARD, getTranslation("side-menu.dashboard"), DashboardView.class),
                 createTab(VaadinIcon.CONNECT, getTranslation("side-menu.products"), ProductView.class),
                 createTab(VaadinIcon.COFFEE, getTranslation("side-menu.recipes"), RecipeView.class),
-                createTab(VaadinIcon.CART, getTranslation("side-menu.shopping-lists"), ShoppingListView.class));
+                createTab(VaadinIcon.CART, getTranslation("side-menu.shopping-lists"), ShoppingListView.class),
+                createTab(VaadinIcon.HARDDRIVE, getTranslation("side-menu.backup"), BackupView.class));
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
         return tabs;
     }

@@ -20,5 +20,4 @@ public class ShoppingListFilter implements Translator, GridDataFilter {
         return searchTerm == null || searchTerm.isEmpty()
                 || value.toLowerCase().contains(searchTerm.toLowerCase());
     }
-
 }

@@ -1,6 +1,7 @@
 package pl.daveproject.dietapp.ui.component.grid;
 
 import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -29,12 +30,39 @@ public class CrudGrid<MODEL, FILTER extends GridDataFilter> extends VerticalLayo
     }
 
     public CrudGrid(AbstractBackEndDataProvider<MODEL, FILTER> dataProvider, FILTER dataFilter, boolean hasEditBtn) {
+        this(dataProvider, dataFilter, new CrudToolbar(hasEditBtn), true);
+    }
+
+    public CrudGrid(AbstractBackEndDataProvider<MODEL, FILTER> dataProvider, FILTER dataFilter,
+                    String addButtonTranslationKey, String editButtonTranslationKey, String deleteButtonTranslationKey,
+                    boolean hasSearchField) {
+        this(dataProvider, dataFilter, new CrudToolbar(addButtonTranslationKey, editButtonTranslationKey, deleteButtonTranslationKey), hasSearchField);
+    }
+
+    public CrudGrid(AbstractBackEndDataProvider<MODEL, FILTER> dataProvider, FILTER dataFilter,
+                    String addButtonTranslationKey, VaadinIcon addButtonIcon, String deleteButtonTranslationKey,
+                    boolean hasSearchField) {
+        this(dataProvider, dataFilter,
+                new CrudToolbar(addButtonTranslationKey, addButtonIcon, deleteButtonTranslationKey),
+                hasSearchField);
+    }
+
+    public CrudGrid(AbstractBackEndDataProvider<MODEL, FILTER> dataProvider, FILTER dataFilter,
+                    CrudToolbar toolbar, boolean hasSearchField) {
         this.dataFilter = dataFilter;
         this.dataProvider = dataProvider;
         this.filterDataProvider = dataProvider.withConfigurableFilter();
         this.grid = createGrid();
-        this.toolbar = new CrudToolbar(hasEditBtn);
-        add(toolbar, createSearchTextField(), grid);
+        this.toolbar = toolbar;
+        if (hasSearchField) {
+            add(toolbar, createSearchTextField(), grid);
+        } else {
+            add(toolbar, grid);
+        }
+    }
+
+    public void addComponentToToolbar(Component component) {
+        toolbar.add(component);
     }
 
     public void addOnClickListener(ComponentEventListener<ClickEvent<Button>> listener) {

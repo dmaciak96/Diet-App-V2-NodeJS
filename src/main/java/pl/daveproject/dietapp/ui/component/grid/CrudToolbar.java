@@ -21,11 +21,30 @@ public class CrudToolbar extends HorizontalLayout {
                 new Icon(VaadinIcon.TRASH));
         this.editButton.setEnabled(false);
         this.deleteButton.setEnabled(false);
+
         if (hasEditBtn) {
             add(addButton, editButton, deleteButton);
         } else {
             add(addButton, deleteButton);
         }
+    }
+
+    public CrudToolbar(String addButtonTranslationKey,
+                       String editButtonTranslationKey,
+                       String deleteButtonTranslationKey) {
+        this(true);
+        addButton.setText(getTranslation(addButtonTranslationKey));
+        editButton.setText(getTranslation(editButtonTranslationKey));
+        deleteButton.setText(getTranslation(deleteButtonTranslationKey));
+    }
+
+    public CrudToolbar(String addButtonTranslationKey,
+                       VaadinIcon addButtonIcon,
+                       String deleteButtonTranslationKey) {
+        this(false);
+        addButton.setText(getTranslation(addButtonTranslationKey));
+        addButton.setIcon(new Icon(addButtonIcon));
+        deleteButton.setText(getTranslation(deleteButtonTranslationKey));
     }
 
     public void addOnClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
