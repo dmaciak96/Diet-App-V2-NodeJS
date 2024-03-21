@@ -107,7 +107,7 @@ public class BackupView extends VerticalLayout implements HasDynamicTitle {
     }
 
     private Button createRunRestoreButton() {
-        var restoreButton = new Button(getTranslation("backup-page.run-restore"),
+        var restoreButton = new Button(getTranslation(RUN_RESTORE_TRANSLATION_KEY),
                 new Icon(VaadinIcon.PLAY));
         restoreButton.addClickListener(event -> createAndOpenRestoreDialog());
         return restoreButton;
