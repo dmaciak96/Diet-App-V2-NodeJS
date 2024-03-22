@@ -15,6 +15,7 @@ import pl.daveproject.dietapp.backup.service.BackupService;
 import pl.daveproject.dietapp.security.service.UserService;
 import pl.daveproject.dietapp.ui.component.DeleteConfirmDialog;
 import pl.daveproject.dietapp.ui.component.DownloadButton;
+import pl.daveproject.dietapp.ui.component.FileDownloader;
 import pl.daveproject.dietapp.ui.component.grid.CrudGrid;
 import pl.daveproject.dietapp.ui.component.grid.GridDataFilter;
 import pl.daveproject.dietapp.ui.layout.AfterLoginAppLayout;
@@ -53,13 +54,15 @@ public class BackupView extends VerticalLayout implements HasDynamicTitle {
         backupMetadataGrid.getGrid()
                 .addColumn(BackupMetadataDto::getCreatedDateAsString)
                 .setHeader(getTranslation("backup-page.grid.creation-date"))
-                .setSortable(true)
-                .setResizable(true);
+                .setSortable(false)
+                .setResizable(false);
 
         backupMetadataGrid.getGrid().addColumn(new ComponentRenderer<>(backupMetadataDto -> {
                     var downloadButton = new DownloadButton();
                     downloadButton.addClickListener(e -> {
-                        //TODO: Implement download backup zip files
+                        var zipFileName = "backup_%s.zip".formatted(backupMetadataDto.getCreatedDateAsStringWithoutSpace());
+                        var zipFileData = backupService.generateZipFromBackupData(backupMetadataDto.id());
+                        add(new FileDownloader(zipFileName, zipFileData));
                     });
                     return downloadButton;
                 }))

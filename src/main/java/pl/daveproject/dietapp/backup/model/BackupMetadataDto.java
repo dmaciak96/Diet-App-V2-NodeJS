@@ -24,4 +24,11 @@ public record BackupMetadataDto(UUID id,
                 .withZone(ZoneId.systemDefault());
         return creationDate == null ? StringUtils.EMPTY : formatter.format(creationDate);
     }
+
+    public String getCreatedDateAsStringWithoutSpace() {
+        var formatter = DateTimeFormatter
+                .ofPattern("yyyy-MM-dd'T'HH-mm-ss")
+                .withZone(ZoneId.systemDefault());
+        return creationDate == null ? StringUtils.EMPTY : formatter.format(creationDate);
+    }
 }

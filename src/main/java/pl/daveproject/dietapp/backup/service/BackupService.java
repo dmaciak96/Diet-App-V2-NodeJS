@@ -1,6 +1,5 @@
 package pl.daveproject.dietapp.backup.service;
 
-import pl.daveproject.dietapp.backup.model.BackupMetadata;
 import pl.daveproject.dietapp.backup.model.BackupMetadataDto;
 
 import java.util.List;
@@ -17,4 +16,6 @@ public interface BackupService {
     List<BackupMetadataDto> findAll();
 
     void delete(UUID id);
+
+    byte[] generateZipFromBackupData(UUID backupMetadataId);
 }

@@ -3,10 +3,13 @@ package pl.daveproject.dietapp.backup.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.daveproject.dietapp.backup.model.BackupFileNames;
 import pl.daveproject.dietapp.backup.model.BackupMetadataDto;
 import pl.daveproject.dietapp.backup.repository.BackupMetadataRepository;
 import pl.daveproject.dietapp.exception.BackupException;
+import pl.daveproject.dietapp.exception.FileGenerateException;
 import pl.daveproject.dietapp.security.service.UserService;
+import pl.daveproject.dietapp.zip.ZipFileCreator;
 
 import java.time.Instant;
 import java.util.List;
@@ -76,6 +79,33 @@ public class BackupServiceImpl implements BackupService {
         if (backupMetadataRepository.findFirstByApplicationUserIdAndId(currentUser.getId(), id).isPresent()) {
             log.debug("Deleting backup metadata {}", id);
             backupMetadataRepository.deleteById(id);
+        }
+    }
+
+    @Override
+    public byte[] generateZipFromBackupData(UUID backupMetadataId) {
+        var metadataDto = findById(backupMetadataId);
+        var zipFileName = "backup_%s.zip".formatted(metadataDto.getCreatedDateAsStringWithoutSpace());
+
+        checkIfBackupDataIsPresent(metadataDto.products(), "Products");
+        checkIfBackupDataIsPresent(metadataDto.recipes(), "Recipes");
+        checkIfBackupDataIsPresent(metadataDto.shoppingLists(), "Shopping lists");
+        checkIfBackupDataIsPresent(metadataDto.bmi(), "BMI");
+        checkIfBackupDataIsPresent(metadataDto.caloricNeeds(), "Total caloric needs");
+
+        try (var zipFileCreator = new ZipFileCreator()) {
+            zipFileCreator.addFileToArchive(BackupFileNames.PRODUCTS.getFileName(), metadataDto.products());
+            zipFileCreator.addFileToArchive(BackupFileNames.RECIPES.getFileName(), metadataDto.recipes());
+            zipFileCreator.addFileToArchive(BackupFileNames.SHOPPING_LISTS.getFileName(), metadataDto.shoppingLists());
+            zipFileCreator.addFileToArchive(BackupFileNames.BMI.getFileName(), metadataDto.bmi());
+            zipFileCreator.addFileToArchive(BackupFileNames.TOTAL_CALORIC_NEEDS.getFileName(), metadataDto.caloricNeeds());
+            return zipFileCreator.generateAsBytesArray();
+        }
+    }
+
+    private void checkIfBackupDataIsPresent(byte[] backupData, String backupDataName) {
+        if (backupData == null) {
+            throw new FileGenerateException("%s backup data is empty".formatted(backupDataName));
         }
     }
 }
