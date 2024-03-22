@@ -3,6 +3,7 @@ package pl.daveproject.dietapp.caloricneeds.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.daveproject.dietapp.UnitConverter;
 import pl.daveproject.dietapp.bmi.model.UnitSystem;
 import pl.daveproject.dietapp.caloricneeds.mapper.TotalCaloricNeedsMapper;
 import pl.daveproject.dietapp.caloricneeds.model.TotalCaloricNeedsDto;
@@ -64,7 +65,8 @@ public class TotalCaloricNeedsServiceImpl implements TotalCaloricNeedsService {
 
     private double calculateTotalCaloricNeeds(TotalCaloricNeedsDto totalCaloricNeedsDto) {
         var bmr = calculateBMR(totalCaloricNeedsDto);
-        return bmr * totalCaloricNeedsDto.getActivityLevel().getPal();
+        var totalCaloricNeeds = bmr * totalCaloricNeedsDto.getActivityLevel().getPal();
+        return UnitConverter.roundToTwoDecimalDigits(totalCaloricNeeds);
     }
 
     private double calculateBMR(TotalCaloricNeedsDto totalCaloricNeedsDto) {

@@ -4,6 +4,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import pl.daveproject.dietapp.UnitConverter;
 import pl.daveproject.dietapp.product.mapper.ProductMapper;
 import pl.daveproject.dietapp.product.model.ProductDto;
 import pl.daveproject.dietapp.product.model.ProductRequest;
@@ -40,7 +41,7 @@ public class ProductView extends VerticalLayout implements HasDynamicTitle {
                 .setSortable(true)
                 .setResizable(true);
 
-        productGrid.getGrid().addColumn(product -> (double) Math.round(product.getKcal() * 100) / 100, ProductDataProvider.KCAL_SORTING_KEY)
+        productGrid.getGrid().addColumn(product -> UnitConverter.roundToTwoDecimalDigits(product.getKcal()), ProductDataProvider.KCAL_SORTING_KEY)
                 .setHeader(getTranslation("products-page.grid-label-kcal"))
                 .setSortable(true)
                 .setResizable(true);

@@ -5,6 +5,7 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBarVariant;
+import pl.daveproject.dietapp.UnitConverter;
 
 public class ProgressBar extends VerticalLayout {
     private final com.vaadin.flow.component.progressbar.ProgressBar progressBar;
@@ -31,7 +32,7 @@ public class ProgressBar extends VerticalLayout {
 
     public void setValue(double value) {
         this.progressBar.setValue(value);
-        this.labelValue.setText(Math.round(value * 100) + "%");
+        this.labelValue.setText(UnitConverter.roundToInt(value) + "%");
     }
 
     public void setSuccessColor() {

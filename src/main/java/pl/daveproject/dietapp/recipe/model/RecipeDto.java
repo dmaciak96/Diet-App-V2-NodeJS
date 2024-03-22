@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.daveproject.dietapp.UnitConverter;
 import pl.daveproject.dietapp.recipe.model.productentry.RecipeProductEntryDto;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class RecipeDto {
     }
 
     public double getRoundedKcal() {
-        return (double) Math.round(getKcal() * 100) / 100;
+        return UnitConverter.roundToTwoDecimalDigits(getKcal());
     }
 
     private double getKcalForProduct(RecipeProductEntryDto recipeProductEntry) {

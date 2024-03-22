@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.daveproject.dietapp.UnitConverter;
 import pl.daveproject.dietapp.recipe.model.RecipeDto;
 import pl.daveproject.dietapp.shoppinglist.model.productentry.ShoppingListProductEntryDto;
 
@@ -39,6 +40,6 @@ public class ShoppingListDto {
                 .map(RecipeDto::getKcal)
                 .reduce(Double::sum)
                 .orElse(0.0);
-        return (double) Math.round(kcal * 100) / 100;
+        return UnitConverter.roundToTwoDecimalDigits(kcal);
     }
 }

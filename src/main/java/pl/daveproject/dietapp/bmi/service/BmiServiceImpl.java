@@ -3,6 +3,7 @@ package pl.daveproject.dietapp.bmi.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.daveproject.dietapp.UnitConverter;
 import pl.daveproject.dietapp.bmi.mapper.BmiMapper;
 import pl.daveproject.dietapp.bmi.model.BmiDto;
 import pl.daveproject.dietapp.bmi.model.BmiRate;
@@ -69,7 +70,8 @@ public class BmiServiceImpl implements BmiService {
             height *= 0.0254;
             weight *= 0.45359237;
         }
-        return weight / Math.pow(height, 2);
+        var bmi = weight / Math.pow(height, 2);
+        return UnitConverter.roundToTwoDecimalDigits(bmi);
     }
 
     private BmiRate calculateBmiRate(double bmi) {
