@@ -10,10 +10,6 @@ public class FileUploader extends Upload {
 
     public FileUploader(Receiver receiver,
                         int maxFileSize,
-                        String dragAndDropSingleFileMessageKey,
-                        String dragAndDropSingleManyFilesMessageKey,
-                        String selectFromDiskSingleFileMessageKey,
-                        String selectFromDiskManyFilesMessageKey,
                         String toManyFilesErrorMessageKey,
                         String fileIsToBigErrorMessageKey,
                         String incorrectFileTypeErrorMessageKey,
@@ -21,28 +17,20 @@ public class FileUploader extends Upload {
         super(receiver);
         this.setAcceptedFileTypes(acceptedFileTypes);
         this.setMaxFileSize(maxFileSize);
-        setupInternationalization(getTranslation(dragAndDropSingleFileMessageKey),
-                getTranslation(dragAndDropSingleManyFilesMessageKey),
-                getTranslation(selectFromDiskSingleFileMessageKey),
-                getTranslation(selectFromDiskManyFilesMessageKey),
-                getTranslation(toManyFilesErrorMessageKey),
+        setupInternationalization(getTranslation(toManyFilesErrorMessageKey),
                 getTranslation(fileIsToBigErrorMessageKey),
                 getTranslation(incorrectFileTypeErrorMessageKey));
     }
 
-    private void setupInternationalization(String dragAndDropSingleFileMessage,
-                                           String dragAndDropSingleManyFilesMessage,
-                                           String selectFromDiskSingleFileMessage,
-                                           String selectFromDiskManyFilesMessage,
-                                           String toManyFilesErrorMessage,
+    private void setupInternationalization(String toManyFilesErrorMessage,
                                            String fileIsToBigErrorMessage,
                                            String incorrectFileTypeErrorMessage) {
         var i18N = new UploadI18N();
-        i18N.setDropFiles(new UploadI18N.DropFiles().setOne(dragAndDropSingleFileMessage)
-                .setMany(dragAndDropSingleManyFilesMessage));
+        i18N.setDropFiles(new UploadI18N.DropFiles().setOne(getTranslation("upload.drop-one-label"))
+                .setMany(getTranslation("upload.drop-many-label")));
 
-        i18N.setAddFiles(new UploadI18N.AddFiles().setOne(selectFromDiskSingleFileMessage)
-                .setMany(selectFromDiskManyFilesMessage));
+        i18N.setAddFiles(new UploadI18N.AddFiles().setOne(getTranslation("upload.select-file-button-label"))
+                .setMany(getTranslation("upload.select-files-button-label")));
 
         i18N.setError(new UploadI18N.Error().setTooManyFiles(toManyFilesErrorMessage)
                 .setFileIsTooBig(fileIsToBigErrorMessage)

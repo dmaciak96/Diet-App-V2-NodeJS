@@ -10,6 +10,7 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.apache.commons.lang3.StringUtils;
 import pl.daveproject.dietapp.backup.BackupRunner;
+import pl.daveproject.dietapp.backup.RestoreRunner;
 import pl.daveproject.dietapp.backup.model.BackupMetadataDto;
 import pl.daveproject.dietapp.backup.service.BackupService;
 import pl.daveproject.dietapp.security.service.UserService;
@@ -30,18 +31,21 @@ public class BackupView extends VerticalLayout implements HasDynamicTitle {
     private final CrudGrid<BackupMetadataDto, GridDataFilter> backupMetadataGrid;
     private final BackupService backupService;
     private final BackupRunner backupRunner;
+    private final RestoreRunner restoreRunner;
     private final UserService userService;
 
     public BackupView(BackupService backupService,
                       BackupDataProvider backupDataProvider,
                       BackupRunner backupRunner,
-                      UserService userService) {
+                      UserService userService,
+                      RestoreRunner restoreRunner) {
         this.backupService = backupService;
         this.backupMetadataGrid = new CrudGrid<>(backupDataProvider, null,
                 CREATE_BACKUP_TRANSLATION_KEY, VaadinIcon.PLAY, DELETE_BACKUP_TRANSLATION_KEY,
                 false);
         this.backupRunner = backupRunner;
         this.userService = userService;
+        this.restoreRunner = restoreRunner;
 
         createGridColumns();
         setOnNewClickListener();
@@ -117,7 +121,7 @@ public class BackupView extends VerticalLayout implements HasDynamicTitle {
     }
 
     private void createAndOpenRestoreDialog() {
-        var restoreDialog = new RunRestoreDialog();
+        var restoreDialog = new RunRestoreDialog(restoreRunner);
         add(restoreDialog);
         restoreDialog.open();
         restoreDialog.addOpenedChangeListener(e -> {
