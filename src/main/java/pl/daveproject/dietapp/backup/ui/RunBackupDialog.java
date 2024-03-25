@@ -21,7 +21,6 @@ public class RunBackupDialog extends CloseableDialog implements Translator {
     private final BackupService backupService;
     private final UserService userService;
     private final ProgressBar progressBar;
-    private final Button runBackupButton;
 
     public RunBackupDialog(BackupRunner backupRunner,
                            BackupService backupService,
@@ -30,9 +29,8 @@ public class RunBackupDialog extends CloseableDialog implements Translator {
         this.backupRunner = backupRunner;
         this.backupService = backupService;
         this.userService = userService;
-        this.runBackupButton = initializeRunBackupButton();
         this.progressBar = new ProgressBar(getTranslation("backup-dialog.start-backup"));
-        add(runBackupButton, progressBar);
+        add(initializeRunBackupButton(), progressBar);
     }
 
     private Button initializeRunBackupButton() {

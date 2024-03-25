@@ -1,4 +1,4 @@
-package pl.daveproject.dietapp.ui.component;
+package pl.daveproject.dietapp.ui.component.filecomponent;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Anchor;

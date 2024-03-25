@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import pl.daveproject.dietapp.security.model.ApplicationUser;
 import pl.daveproject.dietapp.security.service.UserService;
 import pl.daveproject.dietapp.ui.component.MessageDialog;
+import pl.daveproject.dietapp.ui.component.filecomponent.PhotoFileUploader;
 import pl.daveproject.dietapp.ui.layout.BeforeLoginAppLayout;
 
 import java.io.IOException;
@@ -104,11 +105,10 @@ public class RegistrationView extends VerticalLayout implements HasDynamicTitle 
 
     private Upload createUploadButton() {
         var buffer = new MemoryBuffer();
-        var upload = new Upload(buffer);
-        upload.setMaxFileSize(10 * 1024 * 1024);
-        upload.setWidth("100%");
-        upload.setMaxFiles(1);
-        upload.addSucceededListener(
+        var photoFileUploader = new PhotoFileUploader(buffer);
+        photoFileUploader.setWidth("100%");
+        photoFileUploader.setMaxFiles(1);
+        photoFileUploader.addSucceededListener(
                 event -> {
                     var inputStream = buffer.getInputStream();
                     try {
@@ -117,7 +117,7 @@ public class RegistrationView extends VerticalLayout implements HasDynamicTitle 
                         new MessageDialog(getTranslation("upload.error-message"));
                     }
                 });
-        return upload;
+        return photoFileUploader;
     }
 
     @Override

@@ -15,7 +15,7 @@ import pl.daveproject.dietapp.backup.service.BackupService;
 import pl.daveproject.dietapp.security.service.UserService;
 import pl.daveproject.dietapp.ui.component.DeleteConfirmDialog;
 import pl.daveproject.dietapp.ui.component.DownloadButton;
-import pl.daveproject.dietapp.ui.component.FileDownloader;
+import pl.daveproject.dietapp.ui.component.filecomponent.FileDownloader;
 import pl.daveproject.dietapp.ui.component.grid.CrudGrid;
 import pl.daveproject.dietapp.ui.component.grid.GridDataFilter;
 import pl.daveproject.dietapp.ui.layout.AfterLoginAppLayout;
