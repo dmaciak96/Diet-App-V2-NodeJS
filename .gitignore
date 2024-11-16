@@ -21,7 +21,7 @@ src/main/dev-bundle
 .settings
 .springBeans
 .sts4-cache
-db
+data
 
 ### IntelliJ IDEA ###
 .idea
