@@ -34,20 +34,6 @@ public class CrudGrid<MODEL, FILTER extends GridDataFilter> extends VerticalLayo
     }
 
     public CrudGrid(AbstractBackEndDataProvider<MODEL, FILTER> dataProvider, FILTER dataFilter,
-                    String addButtonTranslationKey, String editButtonTranslationKey, String deleteButtonTranslationKey,
-                    boolean hasSearchField) {
-        this(dataProvider, dataFilter, new CrudToolbar(addButtonTranslationKey, editButtonTranslationKey, deleteButtonTranslationKey), hasSearchField);
-    }
-
-    public CrudGrid(AbstractBackEndDataProvider<MODEL, FILTER> dataProvider, FILTER dataFilter,
-                    String addButtonTranslationKey, VaadinIcon addButtonIcon, String deleteButtonTranslationKey,
-                    boolean hasSearchField) {
-        this(dataProvider, dataFilter,
-                new CrudToolbar(addButtonTranslationKey, addButtonIcon, deleteButtonTranslationKey),
-                hasSearchField);
-    }
-
-    public CrudGrid(AbstractBackEndDataProvider<MODEL, FILTER> dataProvider, FILTER dataFilter,
                     CrudToolbar toolbar, boolean hasSearchField) {
         this.dataFilter = dataFilter;
         this.dataProvider = dataProvider;

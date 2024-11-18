@@ -1,5 +1,6 @@
 package pl.daveproject.dietapp.shoppinglist.ui;
 
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.HasDynamicTitle;
@@ -13,7 +14,9 @@ import pl.daveproject.dietapp.shoppinglist.model.ShoppingListDto;
 import pl.daveproject.dietapp.shoppinglist.model.ShoppingListRequest;
 import pl.daveproject.dietapp.shoppinglist.service.ShoppingListService;
 import pl.daveproject.dietapp.ui.component.DeleteConfirmDialog;
+import pl.daveproject.dietapp.ui.component.DownloadButton;
 import pl.daveproject.dietapp.ui.component.ViewDetailsButton;
+import pl.daveproject.dietapp.ui.component.filecomponent.FileDownloader;
 import pl.daveproject.dietapp.ui.component.grid.CrudGrid;
 import pl.daveproject.dietapp.ui.layout.AfterLoginAppLayout;
 
@@ -59,7 +62,17 @@ public class ShoppingListView extends VerticalLayout implements HasDynamicTitle 
                         add(shoppingListDetailsDialog);
                         shoppingListDetailsDialog.open();
                     });
-                    return viewDetailsButton;
+
+                    var downloadButton = new DownloadButton();
+                    downloadButton.addClickListener(e -> {
+                        var shoppingListFile = shoppingListService.exportToFileData(shoppingListUiModel);
+                        if (shoppingListFile.isPresent()) {
+                            var fileDownloader = new FileDownloader(shoppingListFile.get().fileName(), shoppingListFile.get().fileData());
+                            add(fileDownloader);
+                        }
+                    });
+
+                    return new HorizontalLayout(viewDetailsButton, downloadButton);
                 }))
                 .setHeader(StringUtils.EMPTY)
                 .setSortable(false)

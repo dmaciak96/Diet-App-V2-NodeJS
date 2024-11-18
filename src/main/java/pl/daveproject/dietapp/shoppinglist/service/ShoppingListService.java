@@ -2,6 +2,7 @@ package pl.daveproject.dietapp.shoppinglist.service;
 
 
 import pl.daveproject.dietapp.shoppinglist.model.ShoppingListDto;
+import pl.daveproject.dietapp.shoppinglist.model.ShoppingListFileDto;
 import pl.daveproject.dietapp.shoppinglist.model.ShoppingListRandomizeRequest;
 import pl.daveproject.dietapp.shoppinglist.model.ShoppingListRequest;
 
@@ -21,4 +22,6 @@ public interface ShoppingListService {
     ShoppingListDto update(UUID id, ShoppingListRequest request);
 
     void delete(ShoppingListDto shoppingListDto);
+
+    Optional<ShoppingListFileDto> exportToFileData(ShoppingListDto shoppingListDto);
 }
