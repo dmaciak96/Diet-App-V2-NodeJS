@@ -10,11 +10,19 @@ import pl.daveproject.dietapp.recipe.service.RecipeService;
 import pl.daveproject.dietapp.security.service.UserService;
 import pl.daveproject.dietapp.shoppinglist.mapper.ShoppingListMapper;
 import pl.daveproject.dietapp.shoppinglist.model.ShoppingListDto;
+import pl.daveproject.dietapp.shoppinglist.model.ShoppingListFileDto;
 import pl.daveproject.dietapp.shoppinglist.model.ShoppingListRandomizeRequest;
 import pl.daveproject.dietapp.shoppinglist.model.ShoppingListRequest;
 import pl.daveproject.dietapp.shoppinglist.model.productentry.ShoppingListProductEntryDto;
 import pl.daveproject.dietapp.shoppinglist.repository.ShoppingListRepository;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -153,5 +161,41 @@ public class ShoppingListServiceImpl implements ShoppingListService {
             log.debug("Deleting recipe {} - {}", shoppingListDto.getName(), shoppingListDto.getId());
             shoppingListRepository.deleteById(shoppingListDto.getId());
         }
+    }
+
+    @Override
+    public Optional<ShoppingListFileDto> exportToFileData(ShoppingListDto shoppingListDto) {
+        try {
+            var fileSuffix = ".txt";
+            var filePrefix = shoppingListDto.getName();
+            var tempFile = File.createTempFile(filePrefix, fileSuffix);
+            log.debug("Temp file was created: {}", tempFile.getAbsolutePath());
+
+            try (var writer = new BufferedWriter(new FileWriter(tempFile))) {
+                writer.write(getShoppingListContent(shoppingListDto.getProducts()));
+            }
+            log.debug("Shopping list {} was exported to file", shoppingListDto.getId());
+
+            byte[] fileBytes = Files.readAllBytes(tempFile.toPath());
+            log.debug("Temp file was converted to byte array (size: {})", fileBytes.length);
+
+            if (tempFile.delete()) {
+                log.debug("Temp file {} was deleted", filePrefix + fileSuffix);
+            } else {
+                log.warn("Cannot remove temp file {}", filePrefix + fileSuffix);
+            }
+            return Optional.of(new ShoppingListFileDto(filePrefix + fileSuffix, fileBytes));
+        } catch (IOException e) {
+            log.error("Error during exporting shopping list {} to file data: {}", shoppingListDto.getId(), e.getMessage());
+            return Optional.empty();
+        }
+    }
+
+    private String getShoppingListContent(List<ShoppingListProductEntryDto> products) {
+        var stringBuilder = new StringBuilder();
+        products.forEach(product -> {
+            stringBuilder.append("%s - %s[g]\n".formatted(product.getProduct().getName(), product.getAmountInGrams()));
+        });
+        return stringBuilder.toString();
     }
 }
